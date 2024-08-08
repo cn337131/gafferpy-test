@@ -6,7 +6,7 @@ on:
       - closed
 
 env:
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GH_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
 
 jobs:
   update-gaffer-version:
@@ -33,25 +33,19 @@ jobs:
         sed -i'' "s#__version__ = \"$oldVersion\"#__version__ = \"$newVersion\"#g" src/*/__init__.py
         sed -i'' "s#release = '$oldVersion'#release = '$newVersion'#g" docs/source/conf.py
 
-    # - name: Update gafferpy
-    #   run: |
-    #     newVersion=${{ github.event.milestone.title }}
-    #     curl -o spring-rest.jar https://repo.maven.apache.org/maven2/uk/gov/gchq/gaffer/spring-rest/$newVersion/spring-rest-$newVersion-exec.jar
-    #     java -Dgaffer.schemas=tests/road-traffic-example/schema -Dgaffer.storeProperties=tests/road-traffic-example/federatedStore.properties -Dgaffer.graph.config=tests/road-traffic-example/federatedGraphConfig.json -jar spring-rest.jar &
-    #     sleep 1m
-    #     python src/generate.py
-    #     rm spring-rest.jar
+    - name: Update gafferpy
+      run: |
+        newVersion=${{ github.event.milestone.title }}
+        curl -o spring-rest.jar https://repo.maven.apache.org/maven2/uk/gov/gchq/gaffer/spring-rest/$newVersion/spring-rest-$newVersion-exec.jar
+        java -Dgaffer.schemas=tests/road-traffic-example/schema -Dgaffer.storeProperties=tests/road-traffic-example/federatedStore.properties -Dgaffer.graph.config=tests/road-traffic-example/federatedGraphConfig.json -jar spring-rest.jar &
+        sleep 1m
+        python src/generate.py
+        rm spring-rest.jar
 
     - name: Set up Github credentials
       run: |
         git config user.name github-actions[bot]
         git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-
-    - name: Create Issue
-      id: create-issue
-      run: |
-        gh issue create --title "Update Gaffer version to ${{ github.event.milestone.title }}" --body "Use Gaffer version ${{ github.event.milestone.title }}" --label enhancement \
-        | sed -zE "s|.*/issues/([0-9]+)|ISSUE_ID=\1|" >> "$GITHUB_OUTPUT"
 
     - name: Create PR branch
       env:
@@ -71,4 +65,4 @@ jobs:
       env:
         ISSUE_ID: ${{ steps.create-issue.outputs.ISSUE_ID }}
       run: |-
-          gh pr create --title "Gh-$ISSUE_ID: Updated Gaffer version to ${{ github.event.milestone.title }}" --body ""
+          gh pr create --title "Updated Gaffer version to ${{ github.event.milestone.title }}" --body ""
