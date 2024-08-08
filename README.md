@@ -9,8 +9,7 @@
 
 - Persistently connect to a Gaffer rest api to run operations
 - Connect using PKI certificates and SSL
-- Generate Python client code for custom Operations, Predicates, Binary Operators and Functions
-
+  
 ## Installation
 
 `gafferpy` requires Python 3.6+. We do not currently release `gafferpy` on PyPI, but you can install it over ssh with:
