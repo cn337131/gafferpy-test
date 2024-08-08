@@ -7,9 +7,7 @@
 
 ## Features
 
-- Persistently connect to a Gaffer rest api to run operations
-- Connect using PKI certificates and SSL
-  
+
 ## Installation
 
 `gafferpy` requires Python 3.6+. We do not currently release `gafferpy` on PyPI, but you can install it over ssh with:
