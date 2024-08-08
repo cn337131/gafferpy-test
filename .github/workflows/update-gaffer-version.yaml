@@ -33,14 +33,14 @@ jobs:
         sed -i'' "s#__version__ = \"$oldVersion\"#__version__ = \"$newVersion\"#g" src/*/__init__.py
         sed -i'' "s#release = '$oldVersion'#release = '$newVersion'#g" docs/source/conf.py
 
-    - name: Update gafferpy
-      run: |
-        newVersion=${{ github.event.milestone.title }}
-        curl -o spring-rest.jar https://repo.maven.apache.org/maven2/uk/gov/gchq/gaffer/spring-rest/$newVersion/spring-rest-$newVersion-exec.jar
-        java -Dgaffer.schemas=tests/road-traffic-example/schema -Dgaffer.storeProperties=tests/road-traffic-example/federatedStore.properties -Dgaffer.graph.config=tests/road-traffic-example/federatedGraphConfig.json -jar spring-rest.jar &
-        sleep 1m
-        python src/generate.py
-        rm spring-rest.jar
+    # - name: Update gafferpy
+    #   run: |
+    #     newVersion=${{ github.event.milestone.title }}
+    #     curl -o spring-rest.jar https://repo.maven.apache.org/maven2/uk/gov/gchq/gaffer/spring-rest/$newVersion/spring-rest-$newVersion-exec.jar
+    #     java -Dgaffer.schemas=tests/road-traffic-example/schema -Dgaffer.storeProperties=tests/road-traffic-example/federatedStore.properties -Dgaffer.graph.config=tests/road-traffic-example/federatedGraphConfig.json -jar spring-rest.jar &
+    #     sleep 1m
+    #     python src/generate.py
+    #     rm spring-rest.jar
 
     - name: Set up Github credentials
       run: |
