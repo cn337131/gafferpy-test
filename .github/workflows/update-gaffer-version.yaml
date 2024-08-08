@@ -61,6 +61,12 @@ jobs:
         git commit -am "Updated Gaffer version to ${{ github.event.milestone.title }}"
         git push --set-upstream origin ${{ env.VERSION_UPDATE_BRANCH }}
 
+    - name: Tag release branch
+      run: |
+        git tag gafferpy-${{ github.event.milestone.title }}
+        git push origin gafferpy-${{ github.event.milestone.title }}
+        git push
+
     - name: Submit PR
       env:
         ISSUE_ID: ${{ steps.create-issue.outputs.ISSUE_ID }}
