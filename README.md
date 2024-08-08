@@ -10,7 +10,6 @@
 - Persistently connect to a Gaffer rest api to run operations
 - Connect using PKI certificates and SSL
 - Generate Python client code for custom Operations, Predicates, Binary Operators and Functions
-- Turn existing json queries into Python objects
 
 ## Installation
 
